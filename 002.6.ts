@@ -7,3 +7,7 @@ interface Reducable<T, Result = unknown> {
 }
 
 const myArray: Reducable<number> = [1,2,3];
+
+class MyLinkedList<T> implements Reducable<T, number> {
+	// DZ goes here
+}
