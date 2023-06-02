@@ -1,9 +1,9 @@
 // Card desk
 
-type CardColor = "spades" | "hearts" | "diamonds" | "clubs";
-type CardValue = 6 | 7 | 8 | 9 | 10 | "jack" | "queen" | "king" | "ace";
+export type CardColor = "spades" | "hearts" | "diamonds" | "clubs";
+export type CardValue = 6 | 7 | 8 | 9 | 10 | "jack" | "queen" | "king" | "ace";
 
-interface Card {
+export interface Card {
   color: CardColor;
   value: CardValue;
 }
@@ -13,6 +13,8 @@ export const cards: Card[] = [
   { color: "diamonds", value: 7 },
   { color: "hearts", value: 8 },
   { color: "clubs", value: "ace" },
+  { color: "clubs", value: 6 },
+  { color: "diamonds", value: 8 },
 ];
 
 // Someone else
@@ -22,8 +24,6 @@ enum SomeEnumForCards {
   Diamonds = "diamonds",
   Clubs = "clubs",
 }
-
-cards.push({ color: SomeEnumForCards.Spades, value: 6 });
 
 function getCardPower(card: Card) {
   if (card.value === "jack") return 11;
@@ -80,10 +80,14 @@ function evaluateHand(cards: Card[], evaluateCard: EvaluateCardFunction) {
   return stat;
 }
 
-console.log({
-  esteemRegular: evaluateHand(cards, getCardPower),
-  esteemSpecial: evaluateHand(cards, getCardPowerForMygame),
-  esteemRandom: evaluateHand(cards, getRandomCardPower),
-  esteem42: evaluateHand(cards, get42),
-  cards,
-});
+export function main(): void {
+  cards.push({ color: SomeEnumForCards.Spades, value: 6 });
+
+  console.log({
+    esteemRegular: evaluateHand(cards, getCardPower),
+    esteemSpecial: evaluateHand(cards, getCardPowerForMygame),
+    esteemRandom: evaluateHand(cards, getRandomCardPower),
+    esteem42: evaluateHand(cards, get42),
+    cards,
+  });
+}
