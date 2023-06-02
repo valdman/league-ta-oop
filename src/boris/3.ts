@@ -1,4 +1,4 @@
-import { type Card, cards, CardColor } from "./002.5";
+import { type Card, cards, CardColor } from "./2_1";
 
 const INITIAL_VALUE: CardColor[] = [];
 
