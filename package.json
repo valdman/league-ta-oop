@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:example:node": "ts-node src/boris/003.ts",
+    "start:example:node": "ts-node src/yana/4.ts",
     "start:example:bun": "bun run src/boris/003.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5.0.4",
     "bun-types": "^0.6.6",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   }
 }
