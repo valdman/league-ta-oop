@@ -27,7 +27,7 @@ export type ActionType = Actions[keyof Actions];
 export const SIMULATED_ACTIONS: ActionType[] = [
   {
     type: "LOGIN" as const,
-    payload: { user: {} },
+    payload: { user: {name: 'Bobby'} },
   },
   {
     type: "CHANGE_SEARCH" as const,
@@ -41,7 +41,9 @@ export const SIMULATED_ACTIONS: ActionType[] = [
   },
 ];
 
-interface User {}
+interface User {
+  name: string;
+}
 
 export const INITIAL_STATE = {
   search: {

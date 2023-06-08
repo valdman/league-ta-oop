@@ -64,7 +64,7 @@ export function MyComponent() {
       timeoutIds.push(
         setTimeout(() => {
           dispatch(action);
-        }, 700 * i)
+        }, 800 * i)
       );
     }
 
@@ -78,7 +78,9 @@ export function MyComponent() {
 
   return (
     <StateProvider value={{ state, dispatch }}>
-      <h2>Da, tak mozhno</h2>
+      <h2>
+        Da, tak mozhno{state.user?.name ? `, ${state.user.name}!` : ""}
+      </h2>
       <div>
         <input onChange={handleTextChange} value={state.search.q} />
         <div>
