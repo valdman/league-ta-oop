@@ -39,6 +39,7 @@ export function MyComponent() {
   const [state, dispatch] = useReducer(wrappedReducer, INITIAL_STATE);
 
   function handleTextChange(e: ChangeEvent<HTMLInputElement>) {
+    // @ts-ignore Property value is on target
     const newText = e.target.value;
 
     dispatch({
@@ -90,12 +91,14 @@ export function MyStuff() {
     dispatch({
       type: "CHANGE_SEARCH",
       payload: {
-        q: defaultQ
+        q: defaultQ,
       },
     });
   }
 
   return (
-    <button onClick={handleClick}>Click to reset: {state.search.q} {'->'} {defaultQ}</button>
+    <button onClick={handleClick}>
+      Click to reset: {state.search.q} {"->"} {defaultQ}
+    </button>
   );
 }
