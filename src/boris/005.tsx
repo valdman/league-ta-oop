@@ -1,14 +1,8 @@
 import { setIn } from "immutable";
-import {
-  ChangeEvent,
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+
 import { NeverError } from "./005_1";
 
-interface Actions {
+export interface Actions {
   login: {
     type: "LOGIN";
     payload: {
@@ -27,9 +21,9 @@ interface Actions {
   };
 }
 
-type ActionType = Actions[keyof Actions];
+export type ActionType = Actions[keyof Actions];
 
-const actions: ActionType[] = [
+export const SIMULATED_ACTIONS: ActionType[] = [
   {
     type: "LOGIN" as const,
     payload: { user: {} },
@@ -48,7 +42,7 @@ const actions: ActionType[] = [
 
 interface User {}
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   search: {
     q: "",
     results: [],
@@ -58,7 +52,7 @@ const INITIAL_STATE = {
 
 export type State = typeof INITIAL_STATE;
 
-function appReducer(state: State, action: ActionType): State {
+export function appReducer(state: State, action: ActionType): State {
   switch (action.type) {
     case "LOGIN":
       return setIn(state, ["user"], action.payload.user);
@@ -78,12 +72,14 @@ interface Reducer {
   (state: State, action: ActionType): State;
 }
 
-function wrapReducer(reducer: Reducer): Reducer {
+export function wrapReducer(reducer: Reducer): Reducer {
   const result: Reducer = function (state, action) {
     const changedState = reducer(state, action);
     console.log({
       action: action.type,
       diff: calculateObjectDiffRecursive(state, changedState),
+      payload: "payload" in action ? action.payload : null,
+      changedState,
     });
     return changedState;
   };
@@ -91,10 +87,12 @@ function wrapReducer(reducer: Reducer): Reducer {
   return result;
 }
 
-const wrappedReducer = wrapReducer(appReducer);
-const newState = actions.reduce(wrappedReducer, INITIAL_STATE);
+export const wrappedReducer = wrapReducer(appReducer);
 
-console.log({ newState });
+export function simulateActionsOnInitialState() {
+  const newState = SIMULATED_ACTIONS.reduce(wrappedReducer, INITIAL_STATE);
+  console.log({ newState });
+}
 
 // Allowed actions
 // CHANGE_SEARCH
@@ -129,7 +127,7 @@ export function calculateStateDiff(cachedState: State, state: State) {
   return changedKeys;
 }
 
-function calculateObjectDiffRecursive(
+export function calculateObjectDiffRecursive(
   cachedState: State,
   state: State
 ): string[] {
@@ -172,71 +170,4 @@ function calculateObjectDiffRecursive(
   } else {
     return finalChanges;
   }
-}
-
-const StateContext = createContext<{
-  state: State;
-  dispatch: (action: ActionType) => void;
-}>({ dispatch: () => {}, state: INITIAL_STATE });
-
-function MyComponent() {
-  const [state, dispatch] = useReducer(wrappedReducer, INITIAL_STATE);
-
-  function handleTextChange(e: Event) {
-    const newText = e.target?.value;
-
-    dispatch({
-      type: "CHANGE_SEARCH",
-      payload: {
-        q: newText,
-      },
-    });
-  }
-
-  useEffect(() => {
-    const timeoutId = setInterval(() => {
-      dispatch({
-        type: "CHANGE_SEARCH",
-        payload: {
-          q: "newText",
-        },
-      });
-    }, 200);
-    return () => clearInterval(timeoutId);
-  }, []);
-
-  const res = (
-    <StateContext.Provider value={{state, dispatch}}>
-      <div>
-        <input onChange={handleTextChange} value={state.search.q} />
-        <div>
-          <p>{}</p>
-          <MyStuff />
-        </div>
-      </div>
-    </StateContext.Provider>
-  );
-
-  console.log(res);
-
-  return res;
-}
-
-function MyStuff() {
-  const {state, dispatch} = useContext(StateContext);
-
-  function handleClick() {
-	dispatch({
-		type: "CHANGE_SEARCH",
-		payload: {
-			q: "newText",
-		},
-	});
-  }
-
-  return <p onClick={handleClick}>{state.search.q}</p>;
-}
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }

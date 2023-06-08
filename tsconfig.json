@@ -5,7 +5,8 @@
     // typescript options here
     "target": "ESNext",
     "lib": ["ESNext", "DOM"],
-    "types": ["bun-types"]
+    "types": ["bun-types"],
+    "jsx": "react-jsx"
   },
 
   "ts-node": {
