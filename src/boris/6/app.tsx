@@ -64,7 +64,7 @@ export function MyComponent() {
       timeoutIds.push(
         setTimeout(() => {
           dispatch(action);
-        }, 10 * i)
+        }, 700 * i)
       );
     }
 

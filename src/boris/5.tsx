@@ -45,7 +45,7 @@ interface User {}
 
 export const INITIAL_STATE = {
   search: {
-    q: "",
+    q: "Timer ticking...",
     results: [],
   },
   user: null as User | null,
