@@ -24,11 +24,12 @@ export function Html({ scriptHash }: { scriptHash: string }) {
     <html>
       <head>
         <title>My App</title>
+        <style>{STYLES}</style>
       </head>
       <body>
         <div id="root">
           <MyComponent />
-          <script src="/index.js" nonce={scriptHash}></script>
+          <script src="/index.js" {...{ "data-hash": scriptHash }}></script>
         </div>
       </body>
     </html>
@@ -38,6 +39,9 @@ export function Html({ scriptHash }: { scriptHash: string }) {
 export function MyComponent() {
   const [state, dispatch] = useReducer(wrappedReducer, INITIAL_STATE);
 
+  // На каждое изменение текста в поле ввода меняется состояние,
+  // и в консоли появляется сообщение о том, что состояние изменилось
+  // (см. src/boris/005.tsx @wrappedReducer)
   function handleTextChange(e: ChangeEvent<HTMLInputElement>) {
     // @ts-ignore Property value is on target
     const newText = e.target.value;
@@ -54,6 +58,7 @@ export function MyComponent() {
     const timeoutIds: Timer[] = [];
     let i = 0;
 
+    // Действия совершаются с задержкой, чтобы сымитировать пользовательский ввод
     for (const action of SIMULATED_ACTIONS) {
       ++i;
       timeoutIds.push(
@@ -63,6 +68,7 @@ export function MyComponent() {
       );
     }
 
+    // Просто очистка таймеров при удалении компонента
     return function () {
       for (const timeout of timeoutIds) {
         clearTimeout(timeout);
@@ -76,14 +82,14 @@ export function MyComponent() {
       <div>
         <input onChange={handleTextChange} value={state.search.q} />
         <div>
-          <MyStuff />
+          <ResetButton />
         </div>
       </div>
     </StateProvider>
   );
 }
 
-export function MyStuff() {
+export function ResetButton() {
   const { state, dispatch } = useContext(StateContext);
   const defaultQ = "default text";
 
@@ -102,3 +108,20 @@ export function MyStuff() {
     </button>
   );
 }
+
+const STYLES =
+  // Это просто стили для примера
+  `
+  body {
+    font-family: sans-serif;
+    font-size: 28px;
+  }
+
+  body :is(input, button) {
+    font-size: inherit;
+  }
+
+  button {
+    margin: 0.8rem 0;
+  }
+  `;
