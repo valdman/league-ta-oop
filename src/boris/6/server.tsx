@@ -9,7 +9,7 @@ if (globalThis.Bun) {
   console.log("Building client bundle...");
 
   const { success, outputs, logs } = await Bun.build({
-    entrypoints: ["src/boris/006/index.tsx"],
+    entrypoints: ["src/boris/6/index.tsx"],
     target: "browser",
     sourcemap: "inline",
   });
