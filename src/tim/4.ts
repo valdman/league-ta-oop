@@ -8,6 +8,7 @@ let baseState = {
 
 };
 
+const structuredClone = (obj: any) => JSON.parse(JSON.stringify(obj));
 let newState = structuredClone(baseState);
 newState.currentlyOpen = 1;
 newState.currentlyClosed = 2;
