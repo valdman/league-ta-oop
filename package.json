@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:example:node": "ts-node src/yana/4.ts",
+    "start:example:node": "ts-node src/boris/4.ts",
     "start:example:bun": "bun run src/boris/003.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
