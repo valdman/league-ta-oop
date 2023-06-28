@@ -11,8 +11,41 @@ let i = 0;
 function exampleAsyncFunction(isBroken: boolean) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve("Hello world! " + i++);
+      resolve('Hello world! ' + i++);
     }, 1000);
+  });
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('resolve');
+    }, ms);
+  });
+}
+
+function ping(ms: number, string: string) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(string);
+    }, ms);
+  });
+}
+
+async function randomBatchPing(stringArr: string[], maxTime: number) {
+  const promises = [];
+  for (let string of stringArr) {
+    const random = Math.floor(Math.random() * (maxTime + 1));
+    promises.push(await ping(random, string));
+  }
+  return promises;
+}
+
+function serializePings(stringArr: string[], ms: number, maxTime: number) {
+  return new Promise((resolve, reject) => {
+    setTimeout(async () => {
+      resolve(await randomBatchPing(stringArr, maxTime));
+    }, ms);
   });
 }
 
@@ -20,7 +53,18 @@ async function exampleUsage() {
   const a = await exampleAsyncFunction(false);
   const b = await exampleAsyncFunction(true);
 
-  console.log(a, b);
+  const c = await sleep(2000);
+  const d = await ping(3000, 'asdasd');
+
+  const arr = ['asdasd', 'sadaxcz', 'aseqw'];
+  const e = await randomBatchPing(arr, 3000);
+
+  const arr1 = ['asdasasd23d', 'sa132412daxcz', 'aseq1234w'];
+  const f = await serializePings(arr1, 5000, 3000);
+
+  console.log(a, b, c, d, e, f);
 }
+
+
 
 exampleUsage();
